@@ -20,7 +20,7 @@ use Mix.Config
 #
 #     config :logger, level: :info
 #
-config :advent, ADVENTOFCODE_COOKIE: :undefined
+config :advent, ADVENTOFCODE_COOKIE: :changeme
 
 # It is also possible to import configuration files, relative to this
 # directory. For example, you can emulate configuration per environment
