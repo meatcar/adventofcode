@@ -31,17 +31,17 @@ defmodule Mix.Tasks.Day do
 
   def run([day]) do
     {:ok, input} = fetchInput(2018, day)
+
+    # TODO: hotload modules.
     days = {
-      Day01
+      Day01,
+      Day02
     }
     module = elem(days, String.to_integer(day) - 1)
+
     IO.puts("2018/#{day}, part 1:")
     IO.puts(module.part1(input))
     IO.puts("2018/#{day}, part 2:")
     IO.puts(module.part2(input))
   end
-end
-
-defmodule FetchInput do
-
 end
