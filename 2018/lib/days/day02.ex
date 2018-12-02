@@ -1,10 +1,16 @@
 defmodule Day02 do
+  @moduledoc """
+  Advent of Code Day 2
+  """
+
   def cleanInput(input) do
     input
     |> String.split("\n")
   end
 
   @doc ~S"""
+  For each line, keep track whether there is a double letter or a triple letter. Return num doubles * num triples
+
   ### Example
 
       iex> Day02.part1("abcdef\nbababc\nabbcde\nabcccd\naabcdd\nabcdee\nababab")
@@ -38,6 +44,8 @@ defmodule Day02 do
   end
 
   @doc ~S"""
+  Return all the letters shared by two strings, such that we maximize the length of the string.
+
   ### Example
 
       iex> Day02.part2("abcde\nfghij\nklmno\npqrst\nfguij\naxcye\nwvxyz")

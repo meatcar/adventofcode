@@ -1,10 +1,17 @@
 defmodule Day01 do
+  @moduledoc """
+  Advent of Code Day 1
+  """
+
   def cleanInput(input) do
-    String.split(input, ~r{(, |\n)})
+    input
+    |> String.split(~r{(, |\n)})
     |> Enum.map(fn x -> String.to_integer(x) end)
   end
 
   @doc """
+  Sum
+
   ### Example
 
       iex> Day01.part1("+1, +1, +1")
@@ -24,6 +31,8 @@ defmodule Day01 do
   end
 
   @doc """
+  Keep a rolling sum, return the first sum hit twice.
+
   ### Example
 
       iex> Day01.part2("+1, -1")
@@ -40,10 +49,9 @@ defmodule Day01 do
 
   """
   def part2(input) do
-    # IO.puts("")
     input
     |> cleanInput
-    |> List.to_tuple
+    |> List.to_tuple()
     |> helper(%{0 => 1}, 0, 0)
   end
 
@@ -51,7 +59,6 @@ defmodule Day01 do
     i = Integer.mod(index, tuple_size(tuple))
     e = elem(tuple, i)
     sum = acc + e
-    # IO.puts("acc: #{acc}, e: #{e}, sum: #{sum}, map[sum]: #{map[sum]}")
 
     case map[sum] do
       1 -> sum

@@ -1,4 +1,9 @@
 defmodule Mix.Tasks.Day do
+  @moduledoc """
+  Mix task to get the solution for a given day. Fetches the puzzle
+  input off adventofcode.com, with the configured cookie.
+  """
+
   use Mix.Task
 
   require HTTPoison
@@ -15,18 +20,18 @@ defmodule Mix.Tasks.Day do
   def fetchInput(year, day) do
     HTTPoison.start()
 
-    response = HTTPoison.get("https://adventofcode.com/#{year}/day/#{day}/input", [
-      {"Cookie", Application.fetch_env!(:advent, :ADVENTOFCODE_COOKIE)}
-    ])
+    response =
+      HTTPoison.get("https://adventofcode.com/#{year}/day/#{day}/input", [
+        {"Cookie", Application.fetch_env!(:advent, :ADVENTOFCODE_COOKIE)}
+      ])
 
     case response do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-	{:ok, String.trim(body)}
-      x ->
-	IO.inspect x
-	{:fail, x}
-    end
+        {:ok, String.trim(body)}
 
+      x ->
+        {:fail, x}
+    end
   end
 
   def run([day]) do
@@ -37,6 +42,7 @@ defmodule Mix.Tasks.Day do
       Day01,
       Day02
     }
+
     module = elem(days, String.to_integer(day) - 1)
 
     IO.puts("2018/#{day}, part 1:")
