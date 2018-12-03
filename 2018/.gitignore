@@ -24,3 +24,4 @@ advent-*.tar
 
 config/dev.exs
 config/test.exs
+input

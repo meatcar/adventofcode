@@ -8,15 +8,6 @@ defmodule Mix.Tasks.Day do
 
   require HTTPoison
 
-  @doc """
-  Fetch the puzzle input for a given day and year.
-
-  ### Example
-
-      iex> Mix.Tasks.Day.fetchInput(2017, 3)
-      {:ok, "325489"}
-
-  """
   def fetchInput(year, day) do
     HTTPoison.start()
 
@@ -34,8 +25,31 @@ defmodule Mix.Tasks.Day do
     end
   end
 
+  @doc """
+  Get the puzzle input for a given day and year. Cache it as a file in ./input
+
+  ### Example
+
+      iex> Mix.Tasks.Day.getInput(2017, 3)
+      {:ok, "325489"}
+
+  """
+  def getInput(year, day) do
+    dir = "./input"
+    file = "#{dir}/#{year}-#{day}"
+    if not File.dir?(dir), do: :ok = File.mkdir(dir)
+
+    if not File.exists?(file) do
+      with {:ok, input} <- fetchInput(year, day) do
+        :ok = File.write(file, input)
+      end
+    end
+
+    File.read(file)
+  end
+
   def run([day]) do
-    {:ok, input} = fetchInput(2018, day)
+    {:ok, input} = getInput(2018, day)
 
     # TODO: hotload modules.
     days = {
