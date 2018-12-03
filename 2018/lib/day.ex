@@ -40,7 +40,8 @@ defmodule Mix.Tasks.Day do
     # TODO: hotload modules.
     days = {
       Day01,
-      Day02
+      Day02,
+      Day03
     }
 
     module = elem(days, String.to_integer(day) - 1)
