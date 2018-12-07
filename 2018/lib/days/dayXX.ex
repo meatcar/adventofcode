@@ -7,7 +7,7 @@ defmodule DayXX do
     input
   end
 
-  @doc ~S"""
+  @doc """
 
   ### Example
 
@@ -15,11 +15,11 @@ defmodule DayXX do
       :not_implemented
 
   """
-  def part1(input) do
+  def part1(_input) do
     :not_implemented
   end
 
-  @doc ~S"""
+  @doc """
 
   ### Example
 
@@ -27,7 +27,7 @@ defmodule DayXX do
       :not_implemented
 
   """
-  def part2(input) do
+  def part2(_input) do
     :not_implemented
   end
 end
