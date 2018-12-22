@@ -59,7 +59,8 @@ defmodule Mix.Tasks.Day do
       Day04,
       Day05,
       Day06,
-      Day07
+      Day07,
+      Day08
     }
 
     module = elem(days, String.to_integer(day) - 1)
