@@ -61,14 +61,15 @@ defmodule Mix.Tasks.Day do
       Day06,
       Day07,
       Day08,
-      Day09
+      Day09,
+      Day10
     }
 
     module = elem(days, String.to_integer(day) - 1)
 
     IO.puts("2018/#{day}, part 1:")
-    IO.puts(module.part1(input))
+    IO.inspect(module.part1(input))
     IO.puts("2018/#{day}, part 2:")
-    IO.puts(module.part2(input))
+    IO.inspect(module.part2(input))
   end
 end
