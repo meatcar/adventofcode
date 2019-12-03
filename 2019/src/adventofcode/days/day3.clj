@@ -24,9 +24,10 @@
                     (for [n (range (:n line))]
                      [(move end (+ 1 n))
                       (+ steps (+ 1 n))])
+                    (remove (fn [[p _]] (contains? points p)))
                     (into {}))
         new-end (move end (:n line))]
-    (conj state {:end new-end :points (merge new-points points)})))
+    (conj state {:end new-end :points (conj points new-points)})))
 
 (defn get-points-on-wire [start lines]
   (->
