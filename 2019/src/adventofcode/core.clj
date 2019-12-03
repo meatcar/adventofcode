@@ -13,7 +13,8 @@
       (.println *err* (:body response))
       ;; Assuming pwd contains a `resources/` folder
       (with-open [w (io/writer (str "resources/inputs/day" n ".txt"))]
-        (.write w (:body response))))))
+        (.write w (:body response))
+        :ok))))
 
 (defn day [n]
   (let [day-n (get (get-solutions) n)
