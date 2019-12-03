@@ -24,9 +24,3 @@
         input (solution/clean-input day-n input-str)]
     (println "Day" n "Part 1:" (solution/part1 day-n input))
     (println "Day" n "Part 2:" (solution/part2 day-n input))))
-
-(defn all-days []
-  (->
-    (get-solutions)
-    (keys)
-    (sort)))

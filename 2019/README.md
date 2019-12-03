@@ -4,13 +4,6 @@ Clojure solutions to [Advent Of Code 2019](https://adventofcode.com/2019).
 
 ## Usage
 
-Run all solutions
-
-```sh
-lein repl
-clojure> (all-days)
-```
-
 Run one solution
 
 ```sh
@@ -27,12 +20,6 @@ Fetch input for day
 
 ```sh
 clojure> (new-day 26)
-```
-
-Submit a solution (be careful, don't abuse it)
-
-```sh
-clojure> (submit-day 26)
 ```
 
 ## License
