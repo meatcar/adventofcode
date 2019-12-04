@@ -2,8 +2,7 @@
   (:require
    [clj-http.client :as client]
    [clojure.java.io :as io]
-   [adventofcode.days.core :refer [get-solutions]]
-   [adventofcode.solution :as solution]))
+   [adventofcode.days.core :refer [get-solution]]))
 
 (defn new-day [n]
   (let [response (client/get
@@ -17,10 +16,10 @@
         :ok))))
 
 (defn day [n]
-  (let [day-n (get (get-solutions) n)
+  (let [{:keys [clean part1 part2]} (get-solution n)
         input-str (-> (str "inputs/day" n ".txt")
                       (io/resource)
                       (slurp))
-        input (solution/clean-input day-n input-str)]
-    (println "Day" n "Part 1:" (solution/part1 day-n input))
-    (println "Day" n "Part 2:" (solution/part2 day-n input))))
+        input (clean input-str)]
+    (println "Day" n "Part 1:" (part1 input))
+    (println "Day" n "Part 2:" (part2 input))))

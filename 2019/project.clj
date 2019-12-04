@@ -5,5 +5,4 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [clj-http "3.10.0"]]
-
   :repl-options {:init-ns adventofcode.core})

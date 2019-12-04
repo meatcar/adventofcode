@@ -1,6 +1,4 @@
-(ns adventofcode.days.day4
-  (:require
-   [adventofcode.solution :refer [Solution]]))
+(ns adventofcode.days.day4)
 
 (defn digits [n]
   (->> (iterate #(quot % 10) n)
@@ -21,24 +19,25 @@
        (partition-by identity)
        (some #(= 2 (count %)))))
 
-(deftype solution []
-  Solution
-  (clean-input [this s] (->> s
-                             (clojure.string/trim)
-                             (#(clojure.string/split % #"-"))
-                             (map #(Integer/parseInt %))))
-  (part1 [this [start end]]
-    (->>
-     (range start end)
-     (filter #(and (not (has-decreasing? %))
-                   (has-doubles? %)))
-     (count)))
+(defn clean-input [s]
+  (->> s
+       (clojure.string/trim)
+       (#(clojure.string/split % #"-"))
+       (map #(Integer/parseInt %))))
 
-  (part2 [this [start end]]
-    (->>
-     (range start end)
-     (filter #(and (not (has-decreasing? %))
-                   (has-standalone-doubles? %)))
-     (count))))
+(defn part1 [[start end]]
+  (->> (range start end)
+       (filter #(and (not (has-decreasing? %))
+                     (has-doubles? %)))
+       (count)))
 
+(defn part2 [[start end]]
+  (->> (range start end)
+       (filter #(and (not (has-decreasing? %))
+                     (has-standalone-doubles? %)))
+       (count)))
 
+(def solution
+  {:clean clean-input
+   :part1 part1
+   :part2 part2})

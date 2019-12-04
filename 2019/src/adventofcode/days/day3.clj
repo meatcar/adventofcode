@@ -1,6 +1,4 @@
-(ns adventofcode.days.day3
-  (:require
-    [adventofcode.solution :refer [Solution]]))
+(ns adventofcode.days.day3)
 
 (def moves {:R (fn right [p n] (update p :x #(+ % n)))
             :L (fn left  [p n] (update p :x #(- % n)))
@@ -22,8 +20,8 @@
         steps (get points end)
         new-points (->>
                     (for [n (range (:n line))]
-                     [(move end (+ 1 n))
-                      (+ steps (+ 1 n))])
+                      [(move end (+ 1 n))
+                       (+ steps (+ 1 n))])
                     (remove (fn [[p _]] (contains? points p)))
                     (into {}))
         new-end (move end (:n line))]
@@ -31,37 +29,35 @@
 
 (defn get-points-on-wire [start lines]
   (->
-    (reduce add-line
-            {:end start :points {start 0}}
-            lines)
-    (update :points #(dissoc % start))))
+   (reduce add-line
+           {:end start :points {start 0}}
+           lines)
+   (update :points #(dissoc % start))))
 
 (defn lay-wires [start lines]
   (map #(get-points-on-wire start %) lines))
 
-(deftype solution []
-  Solution
-  (clean-input [this s]
-    (->> s
-         (clojure.string/trim)
-         (clojure.string/split-lines)
-         (map #(map parse-line (clojure.string/split % #",")))))
+(defn clean-input [s]
+  (->> s
+       (clojure.string/trim)
+       (clojure.string/split-lines)
+       (map #(map parse-line (clojure.string/split % #",")))))
 
-  (part1 [this input]
-    (let [start         {:x 0 :y 0}
-          [wire1 wire2] (lay-wires start input)
-          crossings     (clojure.set/intersection
-                          (-> wire1 :points keys set)
-                          (-> wire2 :points keys set))]
-      (->> (map #(distance start %) crossings)
-           (apply min))))
+(defn part1 [input]
+  (let [start         {:x 0 :y 0}
+        [wire1 wire2] (lay-wires start input)
+        crossings     (clojure.set/intersection
+                       (-> wire1 :points keys set)
+                       (-> wire2 :points keys set))]
+    (->> (map #(distance start %) crossings)
+         (apply min))))
 
-  (part2 [this input]
-    (let [start         {:x 0 :y 0}
-          [wire1 wire2] (lay-wires start input)
-          crossings     (clojure.set/intersection
-                          (-> wire1 :points keys set)
-                          (-> wire2 :points keys set))]
-      (->>
-        (map #(+ (get (:points wire1) %) (get (:points wire2) %)) crossings)
-        (apply min)))))
+(defn part2 [input]
+  (let [start         {:x 0 :y 0}
+        [wire1 wire2] (lay-wires start input)
+        crossings     (clojure.set/intersection
+                       (-> wire1 :points keys set)
+                       (-> wire2 :points keys set))]
+    (->>
+     (map #(+ (get (:points wire1) %) (get (:points wire2) %)) crossings)
+     (apply min))))

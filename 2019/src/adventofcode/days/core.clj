@@ -1,12 +1,11 @@
-(ns adventofcode.days.core
-  (:require
-    [adventofcode.days.day1 :as day1]
-    [adventofcode.days.day2 :as day2]
-    [adventofcode.days.day3 :as day3]
-    [adventofcode.days.day4 :as day4]))
+(ns adventofcode.days.core)
 
-(defn get-solutions []
-  {1 (day1/->solution)
-   2 (day2/->solution)
-   3 (day3/->solution)
-   4 (day4/->solution)})
+(defn solution [day-ns]
+  {:clean (ns-resolve day-ns 'clean-input)
+   :part1 (ns-resolve day-ns 'part1)
+   :part2 (ns-resolve day-ns 'part2)})
+
+(defn get-solution [n]
+  (let [day-ns (-> (str "adventofcode.days.day" n) (symbol))]
+    (require day-ns :reload)
+    (solution day-ns)))

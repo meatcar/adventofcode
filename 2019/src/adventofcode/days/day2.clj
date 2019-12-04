@@ -1,6 +1,4 @@
-(ns adventofcode.days.day2
-  (:require
-    [adventofcode.solution :refer [Solution]]))
+(ns adventofcode.days.day2)
 
 (defn make-simple-op [f arity]
   (fn [{:keys [array pointer]}]
@@ -28,29 +26,27 @@
 
 (defn get-output [array noun verb]
   (->
-    {:array (-> array (assoc 1 noun) (assoc 2 verb))
-     :pointer 0}
-    (run)
-    (:array)
-    (first)))
+   {:array (-> array (assoc 1 noun) (assoc 2 verb))
+    :pointer 0}
+   (run)
+   (:array)
+   (first)))
 
-(deftype solution []
-  Solution
-  (clean-input [this s] (->> s
-                             (clojure.string/trim)
-                             (#(clojure.string/split % #","))
-                             (map #(Integer/parseInt %))
-                             (vec)))
-  (part1 [this input]
-    (get-output input 12 2))
+(defn clean-input [s] (->> s
+                           (clojure.string/trim)
+                           (#(clojure.string/split % #","))
+                           (map #(Integer/parseInt %))
+                           (vec)))
+(defn part1 [input]
+  (get-output input 12 2))
 
-  (part2 [this input]
-    (->>
-      (for [x (range 99)
-            y (range 99)
-            :let [output (get-output input x y)]]
-        (if (not= output 19690720)
-          nil
-          (+ (* 100 x) y)))
-      (drop-while nil?)
-      (first))))
+(defn part2 [input]
+  (->>
+   (for [x (range 99)
+         y (range 99)
+         :let [output (get-output input x y)]]
+     (if (not= output 19690720)
+       nil
+       (+ (* 100 x) y)))
+   (drop-while nil?)
+   (first)))
