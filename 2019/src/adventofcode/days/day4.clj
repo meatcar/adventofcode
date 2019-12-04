@@ -16,7 +16,7 @@
 (defn digits [n]
   (->>
       (magnitudes n)
-      (take-while #(not (nil? %)))
+      (take-while #(some? %))
       (map #(mod % 10))))
 
 (defn compare-neighbors [f n]
