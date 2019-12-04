@@ -1,43 +1,25 @@
 (ns adventofcode.days.day4
   (:require
-    [adventofcode.solution :refer [Solution]]))
-
-(defn next-magnitude [n]
-  (if (nil? n)
-    nil
-    (let [mag (unchecked-divide-int n 10)]
-      (if (= 0 mag)
-        nil
-        mag))))
-
-(defn magnitudes [n]
-  (iterate next-magnitude n))
+   [adventofcode.solution :refer [Solution]]))
 
 (defn digits [n]
-  (->>
-      (magnitudes n)
-      (take-while #(some? %))
-      (map #(mod % 10))))
+  (->> (iterate #(quot % 10) n)
+       (take-while #(> % 0))
+       (map #(mod % 10))))
 
 (defn compare-neighbors [f n]
-  (let [ds (digits n)]
-    (->> (interleave ds (cons nil ds))
-         (partition 2)
-         (rest)
-         (some #(apply f %))
-         (boolean))))
+  (->> (digits n)
+       (partition 2 1)
+       (some #(apply f %))))
 
-(defn has-decreasing? [n]
-  (compare-neighbors > n))
+(defn has-decreasing? [n] (compare-neighbors < n))
 
-(defn has-doubles? [n]
-  (compare-neighbors = n))
+(defn has-doubles? [n] (compare-neighbors = n))
 
 (defn has-standalone-doubles? [n]
   (->> (digits n)
        (partition-by identity)
-       (some #(= 2 (count %)))
-       (boolean)))
+       (some #(= 2 (count %)))))
 
 (deftype solution []
   Solution
@@ -47,16 +29,16 @@
                              (map #(Integer/parseInt %))))
   (part1 [this [start end]]
     (->>
-      (range start end)
-      (filter #(and (not (has-decreasing? %))
-                    (has-doubles? %)))
-      (count)))
+     (range start end)
+     (filter #(and (not (has-decreasing? %))
+                   (has-doubles? %)))
+     (count)))
 
   (part2 [this [start end]]
     (->>
-      (range start end)
-      (filter #(and (not (has-decreasing? %))
-                    (has-standalone-doubles? %)))
-      (count))))
+     (range start end)
+     (filter #(and (not (has-decreasing? %))
+                   (has-standalone-doubles? %)))
+     (count))))
 
 
