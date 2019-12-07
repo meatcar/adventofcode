@@ -1,11 +1,13 @@
 (ns adventofcode.days.day7)
 
 (defn digits
-  "Take a number, and return a sequence of it's digits, starting from the lowest"
-  [n]
-  (->> (iterate #(quot % 10) n)
-       (take-while #(> % 0))
-       (map #(mod % 10))))
+  "Take a number x, and return a sequence of length n of it's digits, starting from the lowest"
+  [x n coll]
+  (if (zero? n)
+    coll
+    (recur (quot x 10)
+           (dec n)
+           (conj coll (mod x 10)))))
 
 (defn apply-to-tape [f]
   (fn [state a b out]
@@ -33,40 +35,38 @@
       (update :outputs #(conj % v))
       (update :pointer #(+ % 2))))
 
-(defn ops [code]
+(def ops
   "An op has a function :f that takes state and args, and returns state.
   The args can be finetuned with :params, each arg can be
   :imm (passed-by-value), :pos (passed-by-reference) or
   :any (auto-resolve references)"
-  (case code
-    1 {:f (apply-to-tape +)
-       :params [:any :any :pos]}
-    2 {:f (apply-to-tape *)
-       :params [:any :any :pos]}
-    3 {:f write-val
-       :params [:pos]}
-    4 {:f read-val
-       :params [:any]}
-    5 {:f (jump-cond #(not= 0 %))
-       :params [:any :any]}
-    6 {:f (jump-cond #(= 0 %))
-       :params [:any :any]}
-    7 {:f (apply-to-tape #(if (< %1 %2) 1 0))
-       :params [:any :any :pos]}
-    8 {:f (apply-to-tape #(if (= %1 %2) 1 0))
-       :params [:any :any :pos]}
-    99 {:f #(assoc % :halted? true)
-        :params []}
-    (assert false (str "Invalid opcode: " code))))
+  {1 {:f (apply-to-tape +)
+      :params [:any :any :pos]}
+   2 {:f (apply-to-tape *)
+      :params [:any :any :pos]}
+   3 {:f write-val
+      :params [:pos]}
+   4 {:f read-val
+      :params [:any]}
+   5 {:f (jump-cond #(not= 0 %))
+      :params [:any :any]}
+   6 {:f (jump-cond #(= 0 %))
+      :params [:any :any]}
+   7 {:f (apply-to-tape #(if (< %1 %2) 1 0))
+      :params [:any :any :pos]}
+   8 {:f (apply-to-tape #(if (= %1 %2) 1 0))
+      :params [:any :any :pos]}
+   99 {:f #(assoc % :halted? true)
+       :params []}})
 
 (defn resolve-params [tape params modes args]
-  (for [[param mode arg] (partition 3 (interleave params modes args))]
-    (let [param (case param
-                  :any (if (= 1 mode) :pos :imm)
-                  param)]
-      (case param
-        :pos arg
-        :imm (nth tape arg)))))
+  (->> params
+       (map-indexed #(case %2
+                       :any (if (= 1 (nth modes %1)) :pos :imm)
+                       %2))
+       (map-indexed #(case %2
+                       :pos (nth args %1)
+                       :imm (nth tape (nth args %1))))))
 
 (defn step [{:keys [tape pointer] :as state}]
   (assert (not (:halted? state)) "Not halted")
@@ -74,12 +74,10 @@
         opcode (mod n 100)
         op (ops opcode)
         arity (count (:params op))
-        modes (->> (digits n)
-                   (drop 2)
-                   (#(concat % (repeat 0)))
-                   (take arity))
-        raw-args (->> (subvec tape (inc pointer))
-                      (take arity))
+        modes (digits (quot n 100) arity [])
+
+        raw-args (-> (inc pointer)
+                     (#(subvec tape % (+ % arity))))
         args (resolve-params tape (:params op) modes raw-args)]
 
     (apply (:f op) (cons state args))))
@@ -118,9 +116,8 @@
    :halted? false})
 
 (defn make-amps [tape phases]
-  (mapv #(-> (init-state tape)
-             (assoc :inputs [%]))
-        phases))
+  (let [state (init-state tape)]
+    (mapv #(assoc state :inputs [%]) phases)))
 
 (defn get-max-output [tape phases executor]
   (->>
