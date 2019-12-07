@@ -15,11 +15,14 @@
         (.write w (:body response))
         :ok))))
 
+(defn get-input [n]
+  (-> (str "inputs/day" n ".txt")
+      (io/resource)
+      (slurp)))
+
 (defn day [n]
   (let [{:keys [clean part1 part2]} (get-solution n)
-        input-str (-> (str "inputs/day" n ".txt")
-                      (io/resource)
-                      (slurp))
+        input-str (get-input n)
         input (clean input-str)]
     (println "Day" n "Part 1:" (part1 input))
     (println "Day" n "Part 2:" (part2 input))))
