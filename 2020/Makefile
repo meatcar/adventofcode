@@ -1,25 +1,37 @@
 solutions=$(wildcard days/day*)
+inputs=$(solutions:days/%.zig=inputs/%.txt)
 days=$(solutions:days/%.zig=%)
-inputs=$(days:%=inputs/%.txt)
 
-.SECONDARY:
+.PRECIOUS: $(inputs)
+.PHONY: all clean dev inputs $(days) $(solutions)
 
-all: $(days)
+.DEFAULT: all
+
 .PHONY: all
+all: $(days)
 
-day%: inputs/day%.txt
-	zig fmt days/$@.zig
-	zig test days/$@.zig
-	zig run days/$@.zig
-
+.PHONY: inputs
 inputs: $(inputs)
 
-inputs/%.txt:
+.PHONY: clean
+clean:
+	rm -f $(inputs)
+
+.PHONY: $(days)
+$(days): day%: days/day%.zig
+
+.PHONY: $(solutions)
+$(solutions): days/day%.zig: inputs/day%.txt
+	zig fmt $@
+	zig test $@
+	zig run $@
+
+$(inputs):
 	$(eval FILE := $(notdir $@))
 	$(eval NAME := $(basename ${FILE}))
 	$(eval DAY := $(NAME:day%=%))
 	curl -b session=${COOKIE} 'https://adventofcode.com/2020/day/$(DAY)/input' > $@
 
-clean:
-	rm -f $(inputs)
-
+dev:
+	find days inputs -type f \
+		| SHELL=/bin/sh entr -dcs 'realpath --relative-to=$$PWD $$0 | xargs make'
