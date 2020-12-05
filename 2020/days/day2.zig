@@ -1,9 +1,4 @@
-const std = @import("std");
-const common = @import("./common.zig");
-const mem = std.mem;
-
-var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-const alloc = &arena.allocator;
+usingnamespace @import("./common.zig");
 
 const Policy = struct {
     max: i64,
@@ -20,8 +15,8 @@ pub fn cleanInput(allocator: *mem.Allocator, file: []const u8) !std.ArrayList(Po
         var sections = mem.tokenize(line, " ");
         var limits = mem.tokenize(sections.next().?, "-");
         var item = Policy{
-            .min = try std.fmt.parseInt(i64, limits.next().?, 10),
-            .max = try std.fmt.parseInt(i64, limits.next().?, 10),
+            .min = try parseInt(i64, limits.next().?, 10),
+            .max = try parseInt(i64, limits.next().?, 10),
             .char = sections.next().?[0],
             .pass = sections.next().?,
         };
@@ -41,12 +36,12 @@ test "cleanInput" {
         Policy{ .min = 1, .max = 3, .char = 'b', .pass = "cdefg" },
         Policy{ .min = 2, .max = 9, .char = 'c', .pass = "ccccccccc" },
     };
-    var i: usize = 1;
+    var i: usize = 0;
     while (i < true_input.len) {
-        std.testing.expectEqual(true_input[i].min, input.items[i].min);
-        std.testing.expectEqual(true_input[i].max, input.items[i].max);
-        std.testing.expectEqual(true_input[i].char, input.items[i].char);
-        std.testing.expectEqualSlices(u8, true_input[i].pass, input.items[i].pass);
+        testing.expectEqual(true_input[i].min, input.items[i].min);
+        testing.expectEqual(true_input[i].max, input.items[i].max);
+        testing.expectEqual(true_input[i].char, input.items[i].char);
+        testing.expectEqualSlices(u8, true_input[i].pass, input.items[i].pass);
         i += 1;
     }
 }
@@ -72,7 +67,7 @@ test "part1" {
         \\1-3 b: cdefg
         \\2-9 c: ccccccccc
     );
-    std.testing.expectEqual(@intCast(i64, 2), part1(list.items));
+    testing.expectEqual(@intCast(i64, 2), part1(list.items));
 }
 
 pub fn part2(items: []Policy) i64 {
@@ -93,7 +88,7 @@ test "part2" {
         \\1-3 b: cdefg
         \\2-9 c: ccccccccc
     );
-    std.testing.expectEqual(@intCast(i64, 1), part2(list.items));
+    testing.expectEqual(@intCast(i64, 1), part2(list.items));
 }
 
 pub fn main() !void {
@@ -103,8 +98,8 @@ pub fn main() !void {
     defer input.deinit();
 
     const part1_answer = part1(input.items);
-    std.debug.warn("part1: {}\n", .{part1_answer});
+    warn("part1: {}\n", .{part1_answer});
 
     const part2_answer = part2(input.items);
-    std.debug.warn("part2: {}\n", .{part2_answer});
+    warn("part2: {}\n", .{part2_answer});
 }

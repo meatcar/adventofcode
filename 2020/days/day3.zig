@@ -1,9 +1,4 @@
-const std = @import("std");
-const common = @import("./common.zig");
-const mem = std.mem;
-
-var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-const alloc = &arena.allocator;
+usingnamespace @import("./common.zig");
 
 const Policy = struct {
     max: i64,
@@ -49,9 +44,9 @@ test "cleanInput" {
         "#...##....#",
         ".#..#...#.#",
     };
-    var i: usize = 1;
+    var i: usize = 0;
     while (i < true_input.len) {
-        std.testing.expectEqualSlices(u8, true_input[i], input.items[i]);
+        testing.expectEqualSlices(u8, true_input[i], input.items[i]);
         i += 1;
     }
 }
@@ -88,7 +83,7 @@ test "part1" {
         \\#...##....#
         \\.#..#...#.#
     );
-    std.testing.expectEqual(@intCast(i64, 7), part1(input.items));
+    testing.expectEqual(@intCast(i64, 7), part1(input.items));
 }
 
 pub fn part2(items: [][]const u8) i64 {
@@ -121,7 +116,7 @@ test "part2" {
         \\#...##....#
         \\.#..#...#.#
     );
-    std.testing.expectEqual(@intCast(i64, 336), part2(input.items));
+    testing.expectEqual(@intCast(i64, 336), part2(input.items));
 }
 
 pub fn main() !void {
@@ -131,8 +126,8 @@ pub fn main() !void {
     defer input.deinit();
 
     const part1_answer = part1(input.items);
-    std.debug.warn("part1: {}\n", .{part1_answer});
+    warn("part1: {}\n", .{part1_answer});
 
     const part2_answer = part2(input.items);
-    std.debug.warn("part2: {}\n", .{part2_answer});
+    warn("part2: {}\n", .{part2_answer});
 }

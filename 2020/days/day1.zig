@@ -1,9 +1,4 @@
-const std = @import("std");
-const common = @import("./common.zig");
-const mem = std.mem;
-
-var arena = std.heap.ArenaAllocator.init(std.heap.page_allocator);
-const alloc = &arena.allocator;
+usingnamespace @import("./common.zig");
 
 pub fn cleanInput(allocator: *mem.Allocator, input: []const u8) !std.ArrayList(i32) {
     var nums = std.ArrayList(i32).init(allocator);
@@ -11,7 +6,7 @@ pub fn cleanInput(allocator: *mem.Allocator, input: []const u8) !std.ArrayList(i
     var lines = mem.split(input, "\n");
     while (lines.next()) |line| {
         if (line.len != 0) {
-            var i: i32 = try std.fmt.parseInt(i32, line, 10);
+            var i: i32 = try parseInt(i32, line, 10);
             try nums.append(i);
         }
     }
@@ -20,7 +15,7 @@ pub fn cleanInput(allocator: *mem.Allocator, input: []const u8) !std.ArrayList(i
 
 test "cleanInput" {
     var list = try cleanInput(alloc, "1721\n979\n366\n299\n675");
-    std.testing.expectEqualSlices(
+    testing.expectEqualSlices(
         i32,
         &[_]i32{ 1721, 979, 366, 299, 675 },
         list.items,
@@ -40,7 +35,7 @@ pub fn first(nums: []i32) i32 {
 
 test "first" {
     var list = try cleanInput(alloc, "1721\n979\n366\n299\n675");
-    std.testing.expectEqual(@intCast(i32, 514579), first(list.items));
+    testing.expectEqual(@intCast(i32, 514579), first(list.items));
 }
 
 pub fn second(nums: []i32) i32 {
@@ -58,7 +53,7 @@ pub fn second(nums: []i32) i32 {
 
 test "second" {
     var list = try cleanInput(alloc, "1721\n979\n366\n299\n675");
-    std.testing.expectEqual(@intCast(i32, 241861950), second(list.items));
+    testing.expectEqual(@intCast(i32, 241861950), second(list.items));
 }
 
 pub fn main() !void {
@@ -68,8 +63,8 @@ pub fn main() !void {
     defer nums.deinit();
 
     const first_answer = first(nums.items);
-    std.debug.warn("first: {}\n", .{first_answer});
+    warn("first: {}\n", .{first_answer});
 
     const second_answer = second(nums.items);
-    std.debug.warn("second: {}\n", .{second_answer});
+    warn("second: {}\n", .{second_answer});
 }
