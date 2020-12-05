@@ -35,7 +35,7 @@ test "cleanInput" {
         \\#.##...#...
         \\#...##....#
         \\.#..#...#.#
-        );
+    );
     var true_input = [_][]const u8{
         "..##.......",
         "#...#...#..",
@@ -87,17 +87,17 @@ test "part1" {
         \\#.##...#...
         \\#...##....#
         \\.#..#...#.#
-        );
+    );
     std.testing.expectEqual(@intCast(i64, 7), part1(input.items));
 }
 
 pub fn part2(items: [][]const u8) i64 {
-    const slopes = [_][2]usize {
-        [_]usize{1, 1},
-        [_]usize{3, 1},
-        [_]usize{5, 1},
-        [_]usize{7, 1},
-        [_]usize{1, 2},
+    const slopes = [_][2]usize{
+        [_]usize{ 1, 1 },
+        [_]usize{ 3, 1 },
+        [_]usize{ 5, 1 },
+        [_]usize{ 7, 1 },
+        [_]usize{ 1, 2 },
     };
     var trees: i64 = 1;
     for (slopes) |slope| {
@@ -120,7 +120,7 @@ test "part2" {
         \\#.##...#...
         \\#...##....#
         \\.#..#...#.#
-        );
+    );
     std.testing.expectEqual(@intCast(i64, 336), part2(input.items));
 }
 

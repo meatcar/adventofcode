@@ -19,7 +19,7 @@ pub fn cleanInput(allocator: *mem.Allocator, file: []const u8) !std.ArrayList(Po
     while (lines.next()) |line| {
         var sections = mem.tokenize(line, " ");
         var limits = mem.tokenize(sections.next().?, "-");
-        var item = Policy {
+        var item = Policy{
             .min = try std.fmt.parseInt(i64, limits.next().?, 10),
             .max = try std.fmt.parseInt(i64, limits.next().?, 10),
             .char = sections.next().?[0],
@@ -35,11 +35,11 @@ test "cleanInput" {
         \\1-3 a: abcde
         \\1-3 b: cdefg
         \\2-9 c: ccccccccc
-        );
+    );
     var true_input = [_]Policy{
-        Policy{.min = 1, .max = 3, .char = 'a', .pass = "abcde", },
-        Policy{.min = 1, .max = 3, .char = 'b', .pass = "cdefg", },
-        Policy{.min = 2, .max = 9, .char = 'c', .pass = "ccccccccc", },
+        Policy{ .min = 1, .max = 3, .char = 'a', .pass = "abcde" },
+        Policy{ .min = 1, .max = 3, .char = 'b', .pass = "cdefg" },
+        Policy{ .min = 2, .max = 9, .char = 'c', .pass = "ccccccccc" },
     };
     var i: usize = 1;
     while (i < true_input.len) {
@@ -71,7 +71,7 @@ test "part1" {
         \\1-3 a: abcde
         \\1-3 b: cdefg
         \\2-9 c: ccccccccc
-        );
+    );
     std.testing.expectEqual(@intCast(i64, 2), part1(list.items));
 }
 
@@ -92,7 +92,7 @@ test "part2" {
         \\1-3 a: abcde
         \\1-3 b: cdefg
         \\2-9 c: ccccccccc
-        );
+    );
     std.testing.expectEqual(@intCast(i64, 1), part2(list.items));
 }
 

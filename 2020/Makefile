@@ -1,4 +1,4 @@
-solutions=$(wildcard days/*)
+solutions=$(wildcard days/day*)
 days=$(solutions:days/%.zig=%)
 inputs=$(days:%=inputs/%.txt)
 
@@ -8,6 +8,7 @@ all: $(days)
 .PHONY: all
 
 day%: inputs/day%.txt
+	zig fmt days/$@.zig
 	zig test days/$@.zig
 	zig run days/$@.zig
 
