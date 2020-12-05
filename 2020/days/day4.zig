@@ -1,11 +1,4 @@
-const std = @import("std");
-const common = @import("./common.zig");
-const testing = std.testing;
-const mem = std.mem;
-const warn = std.debug.warn;
-const parseInt = std.fmt.parseInt;
-
-const alloc = std.heap.page_allocator;
+usingnamespace @import("./common.zig");
 
 const Field = struct { key: []const u8, val: []const u8 };
 
@@ -242,8 +235,8 @@ pub fn main() !void {
     defer input.deinit();
 
     const part1_answer = part1(input.items);
-    std.debug.warn("part1: {}\n", .{part1_answer});
+    warn("part1: {}\n", .{part1_answer});
 
     const part2_answer = part2(input.items);
-    std.debug.warn("part2: {}\n", .{part2_answer});
+    warn("part2: {}\n", .{part2_answer});
 }
