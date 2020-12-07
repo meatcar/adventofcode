@@ -33,5 +33,7 @@ $(inputs):
 	curl -b session=${COOKIE} 'https://adventofcode.com/2020/day/$(DAY)/input' > $@
 
 dev:
-	find days inputs -type f \
-		| SHELL=/bin/sh entr -dcs 'realpath --relative-to=$$PWD $$0 | xargs make'
+	while sleep 1; do \
+		find days inputs -type f \
+		| SHELL=/bin/sh entr -dcs 'realpath --relative-to=$$PWD $$0 | xargs make'; \
+		done
