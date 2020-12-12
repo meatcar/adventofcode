@@ -2,6 +2,7 @@ pub const std = @import("std");
 pub const common = @import("./common.zig");
 pub const testing = std.testing;
 pub const mem = std.mem;
+pub const math = std.math;
 pub const warn = std.debug.warn;
 pub const parseInt = std.fmt.parseInt;
 pub const alloc = std.heap.page_allocator;
