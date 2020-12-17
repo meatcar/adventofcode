@@ -13,3 +13,12 @@ pub fn readFile(allocator: *std.mem.Allocator, path: []const u8) ![]const u8 {
     return file;
 }
 
+pub fn countOccurences(comptime T: type, haystack: []const T, needle: []const T) usize {
+    var count: usize = 0;
+    var i: usize = 0;
+    while (i < haystack.len) : (i += 1) {
+        i = mem.indexOfPos(T, haystack, i, needle) orelse break;
+        count += 1;
+    }
+    return count;
+}
