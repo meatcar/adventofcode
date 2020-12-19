@@ -5,7 +5,8 @@ pub const mem = std.mem;
 pub const math = std.math;
 pub const warn = std.debug.warn;
 pub const parseInt = std.fmt.parseInt;
-pub const alloc = std.heap.page_allocator;
+pub const default_allocator = std.heap.page_allocator;
+pub const alloc = default_allocator; //deprecated
 pub const ArrayList = std.ArrayList;
 
 pub fn readFile(allocator: *std.mem.Allocator, path: []const u8) ![]const u8 {
