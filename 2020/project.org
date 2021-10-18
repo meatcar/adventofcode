@@ -1,0 +1,3 @@
+* TODO use std.testing.allocator
+* TODO remove usages of global alloc, always pass allocator from main
+* TODO only have cleanInput, main, first, and last as pub fns

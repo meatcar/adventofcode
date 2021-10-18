@@ -1,6 +1,6 @@
 # 2020
 
-Using [zig](https://ziglang.org) v0.6.0
+Using [zig](https://ziglang.org) v0.7.1
 
 ## Requirements
 
@@ -8,7 +8,7 @@ Using [zig](https://ziglang.org) v0.6.0
 
 ## Running
 
-Run `nix-shell` to install dependencies.
+Run `nix shell` to install dependencies.
 
 Run `make dayX` where `X` is the day of the solution;
 

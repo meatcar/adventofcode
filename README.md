@@ -6,3 +6,4 @@ My solutions to http://adventofcode.com/
 * 2017 - JS
 * 2018 - Elixir
 * 2019 - Clojure
+* 2020 - Zig
