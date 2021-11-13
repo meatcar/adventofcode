@@ -1,0 +1,14 @@
+#!/bin/sh
+DAY=${1:-0}
+YEAR=${YEAR:-$(pwd | xargs basename)}
+URL="https://adventofcode.com/$YEAR/day/$DAY/input"
+OUTFILE="inputs/$DAY.txt"
+
+mkdir -p "$(dirname "$OUTFILE")"
+if [ -e "$OUTFILE" ]; then
+    echo "$OUTFILE exists" >&2
+    exit
+else
+    echo "Caching $URL to $OUTFILE" >&2
+    curl -b session="$COOKIE" "$URL" >"$OUTFILE"
+fi
