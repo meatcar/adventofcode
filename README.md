@@ -7,3 +7,4 @@ My solutions to http://adventofcode.com/
 * 2018 - Elixir
 * 2019 - Clojure
 * 2020 - Zig
+* 2022 - Elixir

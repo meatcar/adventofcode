@@ -20,6 +20,11 @@
             name = "aoc-${toString YEAR}";
             _PATH = "./bin";
             buildInputs = [
+              (pkgs.writeShellScriptBin "run" ''
+                DAY=$(printf '%02d' "$1")
+                bin/cache-input "$1"
+                test -f "days/$DAY.exs" && elixir "days/$DAY.exs"
+              '')
               epkgs.elixir_1_14
               epkgs.elixir_ls
             ];
