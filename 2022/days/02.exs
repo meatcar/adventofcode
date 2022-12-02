@@ -74,7 +74,7 @@ defmodule Day02 do
 end
 
 # TESTS ====================================================
-#
+
 ExUnit.start(autorun: false)
 
 defmodule Day02Test do

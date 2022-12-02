@@ -34,31 +34,33 @@ ExUnit.start(autorun: false)
 defmodule Day01Test do
   use ExUnit.Case
   alias Day01, as: D
+
   @test_str ~S"""
-    1000
-    2000
-    3000
+  1000
+  2000
+  3000
 
-    4000
+  4000
 
-    5000
-    6000
+  5000
+  6000
 
-    7000
-    8000
-    9000
+  7000
+  8000
+  9000
 
-    10000
-    """
+  10000
+  """
 
   test "parse" do
     s = """
-      1
-      2
+    1
+    2
 
-      3
-      4
-      """
+    3
+    4
+    """
+
     assert D.parse(s) == [[1, 2], [3, 4]]
   end
 
@@ -73,7 +75,8 @@ end
 
 case ExUnit.run() do
   %{failures: 0} ->
-    input = Day01.input()
+    input =
+      Day01.input()
       |> Day01.parse()
 
     input
