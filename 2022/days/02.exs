@@ -3,14 +3,17 @@ defmodule Day02 do
   Play rock-paper scissors.
   """
 
-  def input() do
-    File.read!("inputs/02.txt")
-  end
+  def input, do: File.read!("inputs/02.txt")
 
   def parse(s) do
     s
     |> String.split("\n", trim: true)
     |> Enum.map(&String.split(&1, " "))
+  end
+
+  def run(part) do
+    part_fn = &apply(__MODULE__, part, [&1])
+    input() |> parse() |> part_fn.() |> IO.inspect(label: part)
   end
 
   @op_move %{"A" => :r, "B" => :p, "C" => :s}
@@ -106,17 +109,8 @@ end
 
 case ExUnit.run() do
   %{failures: 0} ->
-    input =
-      Day02.input()
-      |> Day02.parse()
-
-    input
-    |> Day02.part1()
-    |> IO.inspect(label: "part1")
-
-    input
-    |> Day02.part2()
-    |> IO.inspect(label: "part2")
+    Day02.run(:part1)
+    Day02.run(:part2)
 
   _ ->
     :error
