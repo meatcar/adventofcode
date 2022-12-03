@@ -12,12 +12,9 @@ defmodule Day04 do
 
   def parse(s) do
     s
-    |> String.split("\n", trim: true)
-    |> Enum.map(fn s ->
-      Regex.run(~r{(?<a>\d+)-(?<b>\d+),(?<c>\d+)-(?<d>\d+)}, s)
-      |> Enum.take(-4)
-      |> Enum.map(&String.to_integer/1)
-    end)
+    |> String.split(~r{\D}, trim: true)
+    |> Enum.map(&String.to_integer/1)
+    |> Enum.chunk_every(4)
   end
 
   @doc """
