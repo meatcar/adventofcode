@@ -3,15 +3,15 @@ defmodule DayXX do
   Template day
   """
 
+  def run(part) do
+    part_fn = &apply(__MODULE__, part, [&1])
+    input() |> parse() |> part_fn.() |> IO.inspect(label: part)
+  end
+
   def input, do: File.read!("inputs/XX.txt")
 
   def parse(s) do
     s
-  end
-
-  def run(part) do
-    part_fn = &apply(__MODULE__, part, [&1])
-    input() |> parse() |> part_fn.() |> IO.inspect(label: part)
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule DayXXTest do
   use ExUnit.Case
   alias DayXX, as: D
 
-  @example ~S"""
+  @example """
   """
 
   test "parse" do
