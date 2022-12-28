@@ -11,8 +11,7 @@
       (system:
         let
           pkgs = import inputs.nixpkgs { inherit system; };
-          erlang = pkgs.erlangR25;
-          epkgs = pkgs.beam.packagesWith erlang;
+          epkgs = pkgs.beam.packages.erlangR24;
         in
         {
           devShells.default = pkgs.mkShell rec {
