@@ -1,5 +1,4 @@
 require('dotenv').config();
-const fetch = require('node-fetch');
 
 module.exports = (y, d) => {
   return fetch(`https://adventofcode.com/${y}/day/${d}/input`, {
