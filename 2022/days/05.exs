@@ -29,13 +29,10 @@ defmodule Day05 do
       |> String.split("\n")
       |> Enum.reverse()
       |> Enum.drop(1)
-      |> Enum.map(fn row ->
-        Regex.scan(~r{(\[\w\]|   ) ?}, row)
-        |> Enum.map(fn [_, x] -> x end)
-      end)
+      |> Enum.map(fn row -> Regex.scan(~r{(\[\w\]|   ) ?}, row, capture: :all_but_first) end)
       |> Enum.reduce(%{}, fn row, map ->
         Enum.with_index(row, &{&2 + 1, &1})
-        |> Enum.reduce(map, fn {i, crate}, map ->
+        |> Enum.reduce(map, fn {i, [crate]}, map ->
           case crate do
             <<"[", c::binary-size(1), "]">> -> add_crates(map, i, [c])
             "   " -> map
@@ -48,8 +45,7 @@ defmodule Day05 do
       |> String.split("\n", trim: true)
       |> Enum.map(fn move ->
         [count, src, dst] =
-          Regex.run(~r{move (\d+) from (\d+) to (\d+)$}, move)
-          |> Enum.drop(1)
+          Regex.run(~r{move (\d+) from (\d+) to (\d+)$}, move, capture: :all_but_first)
           |> Enum.map(&String.to_integer/1)
 
         %Move{count: count, src: src, dst: dst}
@@ -58,15 +54,9 @@ defmodule Day05 do
     {map, moves}
   end
 
-  def add_crates(map, i, crates), do: Map.update(map, i, crates, &(&1 ++ crates))
+  def add_crates(map, i, crates), do: Map.update(map, i, crates, &(crates ++ &1))
 
-  def remove_crates(map, i, count),
-    do:
-      Map.get_and_update(map, i, fn col ->
-        {head, tail} = Enum.split(col, count * -1)
-        if length(tail) != count, do: raise("Not enough crates!")
-        {tail, head}
-      end)
+  def remove_crates(map, i, count), do: get_and_update_in(map[i], &Enum.split(&1, count))
 
   def execute(_move_fn, map, []), do: map
 
@@ -76,8 +66,7 @@ defmodule Day05 do
 
   def move_individually(map, %Move{count: count, src: src, dst: dst}) do
     Enum.reduce(Range.new(1, count), map, fn _count, map ->
-      {crates, newmap} = remove_crates(map, src, 1)
-      add_crates(newmap, dst, crates)
+      move_stack(map, %Move{count: 1, src: src, dst: dst})
     end)
   end
 
@@ -87,6 +76,8 @@ defmodule Day05 do
   end
 
   def top_crates(map) do
+    IO.inspect(map)
+
     Map.keys(map)
     |> Enum.sort()
     |> Enum.map(fn key -> List.last(map[key]) end)
@@ -94,12 +85,14 @@ defmodule Day05 do
   end
 
   @doc """
+  Make moves one crate at a time.
   """
   def part1({map, moves}) do
     execute(&move_individually/2, map, moves) |> top_crates()
   end
 
   @doc """
+  Make moves, moving a whole stack of crates at once.
   """
   def part2({map, moves}) do
     execute(&move_stack/2, map, moves) |> top_crates()
@@ -136,7 +129,7 @@ defmodule Day05Test do
 
   test "parse" do
     assert D.parse(@example) == {
-             %{1 => ["Z", "N"], 2 => ["M", "C", "D"], 3 => ["P"]},
+             %{1 => ["N", "Z"], 2 => ["D", "C", "M"], 3 => ["P"]},
              [
                %D.Move{src: 2, dst: 1, count: 1},
                %D.Move{src: 1, dst: 3, count: 3},
@@ -146,7 +139,7 @@ defmodule Day05Test do
            }
 
     assert D.parse(@example2) == {
-             %{1 => ["Z", "N"], 2 => ["M"], 3 => ["P", "C"]},
+             %{1 => ["N", "Z"], 2 => ["M"], 3 => ["C", "P"]},
              [
                %D.Move{src: 2, dst: 1, count: 1}
              ]
