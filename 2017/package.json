@@ -9,7 +9,7 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
-    "ava": "^0.24.0",
+    "ava": "^5.1.0",
     "debug": "^3.1.0",
     "dotenv": "^4.0.0",
     "eslint": "^4.12.1",
